@@ -1,0 +1,3 @@
+rootProject.name = 'Dexpensify'
+
+include ':app'

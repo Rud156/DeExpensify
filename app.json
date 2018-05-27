@@ -1,0 +1,10 @@
+{
+  "name": "Dexpensify",
+  "displayName": "Dexpensify",
+  "primaryColor": "#ffffff",
+  "androidStatusBarColor": "#2780e4",
+  "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#2780e4"
+    }
+}
