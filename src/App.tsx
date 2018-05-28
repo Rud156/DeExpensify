@@ -1,66 +1,84 @@
 import * as React from 'react';
-import { TabNavigator } from 'react-navigation';
-import { Root, Icon } from 'native-base';
+import { Navigation } from 'react-native-navigation';
+// @ts-ignore
+import Icon from 'react-native-vector-icons/Ionicons';
 
-import Home from './routes/Home';
-import Progress from './routes/Progress';
-import Profile from './routes/Profile';
-
+import { registerScreens } from './screens';
 import { COLORS } from './utils/Constants';
 
-const Navigator = TabNavigator(
-  {
-    Home: { screen: Home },
-    Progress: { screen: Progress },
-    Profile: { screen: Profile },
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === 'Profile') {
-          iconName = 'person';
-        } else if (routeName === 'Progress') {
-          iconName = 'flame';
-        } else {
-          iconName = 'home';
-        }
+registerScreens();
 
-        return <Icon name={iconName} style={{ color: tintColor }} />;
-      },
-    }),
-    initialRouteName: 'Home',
-    tabBarPosition: 'bottom',
-    swipeEnabled: false,
-    animationEnabled: true,
-    tabBarOptions: {
-      activeTintColor: COLORS.BLUE,
-      inactiveTintColor: COLORS.GRAY,
-      showIcon: true,
-      style: {
-        backgroundColor: COLORS.WHITE,
-        elevation: 21,
-      },
-      labelStyle: {
-        fontSize: 10,
-      },
-      tabStyle: {
-        padding: 0,
-        margin: 0,
-        height: 55,
-      },
-      indicatorStyle: {
-        backgroundColor: COLORS.BLUE,
-      },
-    },
+var homeIcon: any;
+var progressIcon: any;
+var profileIcon: any;
+
+class App {
+  constructor() {
+    this._populateIcons()
+      .then(() => {
+        // Start app only if all icons are loaded
+        this.startApp();
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
   }
-);
 
-const App = () => (
-  <Root>
-    <Navigator />
-  </Root>
-);
+  _populateIcons = () => {
+    // @ts-ignore
+    return new Promise((resolve: Function, reject: Function) => {
+      // @ts-ignore
+      Promise.all([
+        Icon.getImageSource('md-home', 27),
+        Icon.getImageSource('md-flame', 27),
+        Icon.getImageSource('ios-person', 27),
+      ])
+        .then((values: any[]) => {
+          homeIcon = values[0];
+          progressIcon = values[1];
+          profileIcon = values[2];
+          resolve(true);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          reject(error);
+        })
+        .done();
+    });
+  };
 
-export default App;
+  startApp() {
+    // This will start our app
+    Navigation.startTabBasedApp({
+      tabs: [
+        {
+          label: 'Home',
+          screen: 'dexpensify.Home',
+          icon: homeIcon,
+          navigatorStyle: {},
+        },
+        {
+          label: 'Progress',
+          screen: 'dexpensify.Progress',
+          icon: progressIcon,
+          navigatorStyle: {},
+        },
+        {
+          label: 'Profile',
+          screen: 'dexpensify.Profile',
+          icon: profileIcon,
+          navigatorStyle: {},
+        },
+      ],
+      appStyle: {
+        // @ts-ignore
+        tabBarSelectedButtonColor: COLORS.BLUE,
+        tabBarButtonColor: COLORS.GRAY,
+        orientation: 'portrait',
+        keepStyleAcrossPush: true,
+      },
+    });
+  }
+}
+
+export default new App();
