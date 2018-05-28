@@ -4,15 +4,13 @@ import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { registerScreens } from './screens';
+import { COLORS } from './utils/Constants';
 
 registerScreens();
 
 var homeIcon: any;
-var homeOutlineIcon: any;
 var progressIcon: any;
-var progressOutlineIcon: any;
 var profileIcon: any;
-var profileOutlineIcon: any;
 
 class App {
   constructor() {
@@ -31,20 +29,14 @@ class App {
     return new Promise((resolve: Function, reject: Function) => {
       // @ts-ignore
       Promise.all([
-        Icon.getImageSource('ios-home', 27),
-        Icon.getImageSource('ios-home-outline', 27),
-        Icon.getImageSource('ios-flame', 27),
-        Icon.getImageSource('ios-flame-outline', 27),
+        Icon.getImageSource('md-home', 27),
+        Icon.getImageSource('md-flame', 27),
         Icon.getImageSource('ios-person', 27),
-        Icon.getImageSource('ios-person-outline', 27),
       ])
         .then((values: any[]) => {
           homeIcon = values[0];
-          homeOutlineIcon = values[1];
-          progressIcon = values[2];
-          progressOutlineIcon = values[3];
-          profileIcon = values[4];
-          profileOutlineIcon = values[5];
+          progressIcon = values[1];
+          profileIcon = values[2];
           resolve(true);
         })
         .catch((error: any) => {
@@ -62,31 +54,31 @@ class App {
         {
           label: 'Home',
           screen: 'dexpensify.Home',
-          icon: homeOutlineIcon,
-          selectedIcon: homeIcon,
-          title: 'Home',
+          icon: homeIcon,
           navigatorStyle: {},
         },
         {
           label: 'Progress',
           screen: 'dexpensify.Progress',
-          icon: progressOutlineIcon,
-          selectedIcon: progressIcon,
-          title: 'Progress',
+          icon: progressIcon,
           navigatorStyle: {},
         },
         {
           label: 'Profile',
           screen: 'dexpensify.Profile',
-          icon: profileOutlineIcon,
-          selectedIcon: profileIcon,
-          title: 'Profile',
+          icon: profileIcon,
           navigatorStyle: {},
         },
       ],
+      appStyle: {
+        // @ts-ignore
+        tabBarSelectedButtonColor: COLORS.BLUE,
+        tabBarButtonColor: COLORS.GRAY,
+        orientation: 'portrait',
+        keepStyleAcrossPush: true,
+      },
     });
   }
 }
 
-const app = new App();
-export default app;
+export default new App();
