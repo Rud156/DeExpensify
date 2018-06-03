@@ -1,12 +1,23 @@
 import * as React from 'react';
 import { Navigation } from 'react-native-navigation';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+
 // @ts-ignore
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import reducers from './reducers';
 import { registerScreens } from './screens';
 import { COLORS } from './utils/Constants';
 
-registerScreens();
+const reducer = combineReducers(reducers);
+const store = createStore(
+  reducer,
+  // @ts-ignore
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+registerScreens(store, Provider);
 
 var homeIcon: any;
 var progressIcon: any;
