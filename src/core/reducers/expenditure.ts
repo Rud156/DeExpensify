@@ -1,32 +1,36 @@
 import uuidV4 from 'uuid/v4';
 import { ADD_EXPENSE, UPDATE_EXPENSE, REMOVE_EXPENSE } from '../actions/expenditure';
 
-export interface IExpenditure {
+export interface IExpenseObject {
+  expenseId: string;
+  amount: number;
+  date: string;
+  comments: string;
+  time: string;
+}
+
+export interface IExpenditureReducer {
   expenditures: {
     [x: string]: {
-      [y: string]: {
-        expenseId: string;
-        amount: number;
-        date: string;
-        comments: string;
-      };
+      [y: string]: IExpenseObject;
     };
   };
 }
 
-const initialState: IExpenditure = {
+const initialState: IExpenditureReducer = {
   expenditures: {},
 };
 
-export const expenditureReducer = (state = initialState, action: any): IExpenditure => {
+export const expenditureReducer = (state = initialState, action: any): IExpenditureReducer => {
   const { expenditures } = state;
   switch (action.type) {
     case ADD_EXPENSE: {
       const {
         amount,
         date,
+        time,
         comments,
-      }: { amount: number; date: string; comments: string } = action.payload;
+      }: { amount: number; date: string; time: string; comments: string } = action.payload;
 
       const expenseId = uuidV4();
 
@@ -36,6 +40,7 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
           amount,
           comments,
           date,
+          time,
           expenseId,
         };
 
@@ -46,6 +51,7 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
             amount,
             comments,
             date,
+            time,
             expenseId,
           },
         };
@@ -58,14 +64,22 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
       const {
         amount,
         date,
+        time,
         comments,
         expenseId,
-      }: { amount: number; date: string; comments: string; expenseId: string } = action.payload;
+      }: {
+        amount: number;
+        date: string;
+        time: string;
+        comments: string;
+        expenseId: string;
+      } = action.payload;
       if (date in expenditures) {
         const currentDateExpenditures = expenditures[date];
         currentDateExpenditures[expenseId] = {
           amount,
           date,
+          time,
           comments,
           expenseId,
         };
