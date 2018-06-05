@@ -18,7 +18,9 @@ const BodyContainer = ({
         <Title>{title}</Title>
       </Body>
     </Header>
-    <Content padder>{children}</Content>
+    <Content padder style={{ backgroundColor: COLORS.WHITE }}>
+      {children}
+    </Content>
     {fixedPositionButtons}
   </Container>
 );

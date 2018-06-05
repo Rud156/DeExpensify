@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLORS } from '../../utils/ColorUtil';
+import { COLORS } from '../../../../utils/ColorUtil';
 
 export default StyleSheet.create({
   bottomActionButton: {
