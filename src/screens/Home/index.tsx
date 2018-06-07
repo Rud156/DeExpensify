@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 
-import DisplayHome from './routes/DisplayHome';
-import AddExpense from './routes/AddExpense';
+import DisplayHome from './StackNavigator/DisplayHome';
+import AddExpense from './StackNavigator/AddExpense';
 
 const Navigator = createStackNavigator(
   {
@@ -10,7 +10,7 @@ const Navigator = createStackNavigator(
     AddExpense: { screen: AddExpense },
   },
   {
-    initialRouteName: 'DisplayHome',
+    initialRouteName: 'AddExpense',
     headerMode: 'none',
   }
 );

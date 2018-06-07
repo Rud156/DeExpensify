@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navigation } from 'react-native-navigation';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // @ts-ignore
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,6 +13,7 @@ import { COLORS } from './utils/ColorUtil';
 
 const reducer = combineReducers(combinedReducer);
 const persistedReducer = persistReducer(
+  // @ts-ignore
   {
     key: 'root',
     storage,

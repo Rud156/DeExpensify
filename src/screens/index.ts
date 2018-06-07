@@ -1,8 +1,8 @@
 import { Navigation } from 'react-native-navigation';
 
-import Home from './../routes/Home';
-import Progress from './../routes/Progress';
-import Profile from './../routes/Profile';
+import Home from './Home';
+import Progress from './Progress';
+import Profile from './Profile';
 import { Store } from 'redux';
 
 export function registerScreens(store: Store, provider: any) {
