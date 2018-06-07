@@ -9,6 +9,7 @@ export const COLORS = {
   RED: '#C62828',
   YELLOW: '#E4BE27',
   LIGHT_GREEN: '#36E427',
+  ORANGE: '#F49E42',
 };
 
 export const getColorForValue = (

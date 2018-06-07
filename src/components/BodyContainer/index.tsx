@@ -6,7 +6,7 @@ import { COLORS } from '../../utils/ColorUtil';
 interface Props {
   title: string;
   fixedPositionButtons?: JSX.Element;
-  children?: JSX.Element;
+  children?: JSX.Element | any;
   leftComponent?: JSX.Element;
   rightComponent?: JSX.Element;
 }

@@ -13,6 +13,7 @@ import {
   Left,
 } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { COLORS } from '../../utils/ColorUtil';
 
 interface Props {
   isDateTimePickerVisible: boolean;
@@ -58,8 +59,8 @@ class AddExpenseCard extends React.PureComponent<Props, {}> {
                   onCancel={closePicker}
                 />
                 <Left>
-                  <Button onPress={openPicker}>
-                    <Text>Select Date and Time</Text>
+                  <Button onPress={openPicker} style={{ backgroundColor: COLORS.BLUE }}>
+                    <Text style={{ fontSize: 14, textAlign: 'center' }}>Select Date and Time</Text>
                   </Button>
                 </Left>
                 <Body>

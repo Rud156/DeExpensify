@@ -1,12 +1,19 @@
 import React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Button, Icon, List } from 'native-base';
+import { Button, Icon, List, Fab } from 'native-base';
 import moment from 'moment';
 
 import BodyContainer from '../../../../components/BodyContainer';
 import AddExpenseCard from '../../../../components/AddExpenseCard';
+import FloatingButton from '../../../../components/FloatingButton';
+
 import { convertToCurrency } from '../../../../utils/ExpenseUtil';
-import { generateISODateString, generateFormattedTime } from '../../../../utils/DateUtil';
+import {
+  generateISODateString,
+  generateFormattedTime,
+  formatHumanReadableDate,
+} from '../../../../utils/DateUtil';
+import { COLORS } from '../../../../utils/ColorUtil';
 
 interface IExpenseDisplayObject {
   isDatePickerVisible: boolean;
@@ -90,14 +97,57 @@ class AddExpense extends React.Component<Props, State> {
           <Button
             transparent
             onPress={() => {
-              this.props.navigation.goBack();
+              this.props.navigation.navigate('DisplayHome');
             }}
           >
             <Icon name="arrow-round-back" />
           </Button>
         }
+        fixedPositionButtons={
+          <React.Fragment>
+            <FloatingButton
+              onPress={() => {
+                console.log('Button Pressed');
+              }}
+              buttonText="Save"
+            />
+            <FloatingButton
+              onPress={() => {
+                console.log('Button Pressed');
+              }}
+              buttonText="Add Another"
+              buttonPositionRight={100}
+              buttonColor={COLORS.ORANGE}
+            />
+          </React.Fragment>
+        }
       >
-        <List>{/* TODO: Add the list here */}</List>
+        <List>
+          {expenses.map((expense, index) => (
+            <AddExpenseCard
+              key={`${index}`}
+              closePicker={() => {
+                this.closeDateTimePickerModal(index);
+              }}
+              onConfirmDate={date => {
+                this.handleDateChange(date, index);
+              }}
+              openPicker={() => {
+                this.openDateTimePickerModal(index);
+              }}
+              handleAmountChange={amount => {
+                this.handleAmountChange(amount, index);
+              }}
+              handleCommentsChange={comments => {
+                this.handleCommentsChange(comments, index);
+              }}
+              isDateTimePickerVisible={expense.isDatePickerVisible}
+              selectedDateTime={
+                expense.date ? `${formatHumanReadableDate(expense.date)}, ${expense.time}` : ''
+              }
+            />
+          ))}
+        </List>
       </BodyContainer>
     );
   }

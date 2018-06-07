@@ -10,7 +10,7 @@ const Navigator = createStackNavigator(
     AddExpense: { screen: AddExpense },
   },
   {
-    initialRouteName: 'AddExpense',
+    initialRouteName: 'DisplayHome',
     headerMode: 'none',
   }
 );
