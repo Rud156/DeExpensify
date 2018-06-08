@@ -22,6 +22,8 @@ const initialState: IExpenditureReducer = {
 };
 
 export const expenditureReducer = (state = initialState, action: any): IExpenditureReducer => {
+  console.log(action.type);
+
   const { expenditures } = state;
   switch (action.type) {
     case ADD_EXPENSE: {

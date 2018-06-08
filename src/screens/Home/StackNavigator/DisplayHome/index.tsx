@@ -4,7 +4,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Dimensions, FlatList } from 'react-native';
 import { View, Text, Icon, Fab } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
-import * as Progress from 'react-native-progress';
+import { CircularProgress } from 'react-native-svg-circular-progress';
 import moment, { Moment } from 'moment';
 
 import ExpenseList from '../../../../components/ExpensesList';
@@ -70,8 +70,7 @@ class DisplayHome extends React.Component<Props, State> {
     const todayISOString = generateISODateString(today);
 
     const todaysExpenses: IExpenseObject[] = convertObjectExpensesToArray(
-      // @ts-ignore
-      expenditure[todayISOString]
+      expenditure.expenditures[todayISOString]
     );
     const todaysTotalExpense: number = getTotalExpenseForDate(todaysExpenses);
 
@@ -92,20 +91,27 @@ class DisplayHome extends React.Component<Props, State> {
           <Text style={style.todaysDateText}>{formatHumanReadableDate(today)}</Text>
         </View>
         <View style={style.justifyCenter}>
-          <Progress.Circle
-            style={[style.extraMargin, { alignSelf: 'center' }]}
-            showsText
-            size={150}
-            progress={todaysTotalExpense / profile.monthlyAmount}
-            thickness={7}
-            color={getColorForValue(
-              todaysTotalExpense,
-              profile.monthlyAmount,
-              minProgressColor,
-              halfProgressColor,
-              maxProgressColor
-            )}
-          />
+          <View style={[style.extraMargin, { alignSelf: 'center' }]}>
+            <CircularProgress
+              percentage={(todaysTotalExpense / profile.monthlyAmount) * 100}
+              blankColor={COLORS.GRAY}
+              donutColor={getColorForValue(
+                todaysTotalExpense,
+                profile.monthlyAmount,
+                minProgressColor,
+                halfProgressColor,
+                maxProgressColor
+              )}
+              size={150}
+              progressWidth={72}
+            >
+              <View>
+                <Text style={{ fontSize: 20 }}>
+                  {((todaysTotalExpense / profile.monthlyAmount) * 100).toFixed(2)} %
+                </Text>
+              </View>
+            </CircularProgress>
+          </View>
         </View>
         <View style={style.justifyCenter}>
           <Text style={style.mainHeaderText}>
@@ -120,18 +126,37 @@ class DisplayHome extends React.Component<Props, State> {
             <Text style={{ fontSize: 20 }}>Today</Text>
           </View>
           <View>
-            <FlatList
-              keyExtractor={item => item.expenseId}
-              data={todaysExpenses}
-              renderItem={({ item: expense, index }) => (
-                <ExpenseList
-                  amount={expense.amount}
-                  time={expense.time}
-                  comments={expense.comments}
-                  currencySymbol={profile.currencySymbol}
+            {todaysExpenses.length !== 0 ? (
+              <FlatList
+                keyExtractor={item => item.expenseId}
+                data={todaysExpenses}
+                renderItem={({ item: expense, index }) => (
+                  <ExpenseList
+                    amount={expense.amount}
+                    time={expense.time}
+                    comments={expense.comments}
+                    currencySymbol={profile.currencySymbol}
+                  />
+                )}
+              />
+            ) : (
+              <View>
+                <Icon
+                  name="ios-sunny-outline"
+                  style={{ fontSize: 50, color: COLORS.DARK_GREY, textAlign: 'center' }}
                 />
-              )}
-            />
+                <Text
+                  style={{
+                    fontSize: 25,
+                    color: COLORS.DARK_GREY,
+                    textAlign: 'center',
+                    marginTop: 14,
+                  }}
+                >
+                  Nothing Spent
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </BodyContainer>

@@ -12,19 +12,26 @@ import {
   Button,
   Left,
   View,
+  Icon,
 } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { COLORS } from '../../utils/ColorUtil';
 
 interface Props {
   isDateTimePickerVisible: boolean;
+
   onConfirmDate: (date: Date) => void;
   openPicker: () => void;
   closePicker: () => void;
   handleAmountChange: (amount: string) => void;
+  amountTouched: () => void;
   handleCommentsChange: (comment: string) => void;
-  selectedDateTime: string;
+  deletePressed: () => void;
 
+  amountError?: boolean;
+  dateError?: boolean;
+
+  selectedDateTime: string;
   index: number;
 }
 
@@ -36,9 +43,13 @@ class AddExpenseCard extends React.PureComponent<Props, {}> {
       openPicker,
       closePicker,
       handleAmountChange,
+      amountTouched,
       handleCommentsChange,
+      deletePressed,
+      amountError,
+      dateError,
       selectedDateTime,
-      index
+      index,
     } = this.props;
 
     return (
@@ -46,17 +57,32 @@ class AddExpenseCard extends React.PureComponent<Props, {}> {
         <Card>
           <CardItem>
             <Content>
-              <Text>Expense {index}</Text>
+              <View
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                }}
+              >
+                <Text style={{ fontSize: 18 }}>Expense {index}</Text>
+                <Icon name="md-trash" onPress={deletePressed} />
+              </View>
               <Form>
-                <Item floatingLabel>
+                <Item floatingLabel error={amountError}>
                   <Label>How much did you spend?</Label>
-                  <Input keyboardType="numeric" onChangeText={handleAmountChange} />
+                  <Input
+                    keyboardType="numeric"
+                    onTouchStart={amountTouched}
+                    onChangeText={handleAmountChange}
+                  />
                 </Item>
                 <Item floatingLabel>
                   <Label>Anything you wish to say?</Label>
                   <Input keyboardType="default" onChangeText={handleCommentsChange} />
                 </Item>
-                <Item style={{ marginTop: 21 }}>
+                <Item style={{ marginTop: 21 }} error={dateError}>
                   <DateTimePicker
                     mode="datetime"
                     isVisible={isDateTimePickerVisible}
@@ -68,9 +94,7 @@ class AddExpenseCard extends React.PureComponent<Props, {}> {
                       onPress={openPicker}
                       style={{ backgroundColor: COLORS.BLUE, marginRight: 3 }}
                     >
-                      <Text style={{ fontSize: 14, textAlign: 'center' }}>
-                        When did you spend?
-                      </Text>
+                      <Text style={{ fontSize: 12, textAlign: 'center' }}>When did you spend?</Text>
                     </Button>
                   </Left>
                   <Body>

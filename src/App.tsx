@@ -30,7 +30,7 @@ const store = createStore(
 registerScreens(store, Provider);
 
 var homeIcon: any;
-var progressIcon: any;
+var statsIcon: any;
 var profileIcon: any;
 
 class App {
@@ -51,12 +51,12 @@ class App {
       // @ts-ignore
       Promise.all([
         Icon.getImageSource('md-home', 27),
-        Icon.getImageSource('md-flame', 27),
+        Icon.getImageSource('md-pulse', 27),
         Icon.getImageSource('ios-person', 27),
       ])
         .then((values: any[]) => {
           homeIcon = values[0];
-          progressIcon = values[1];
+          statsIcon = values[1];
           profileIcon = values[2];
           resolve(true);
         })
@@ -79,9 +79,9 @@ class App {
           navigatorStyle: {},
         },
         {
-          label: 'Progress',
-          screen: 'dexpensify.Progress',
-          icon: progressIcon,
+          label: 'Stats',
+          screen: 'dexpensify.Stats',
+          icon: statsIcon,
           navigatorStyle: {},
         },
         {

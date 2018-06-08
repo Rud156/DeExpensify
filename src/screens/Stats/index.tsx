@@ -1,14 +1,14 @@
 import React from 'react';
 import BodyContainer from '../../components/BodyContainer';
 
-class Progress extends React.Component {
+class Stats extends React.Component {
   static navigatorStyle = {
     navBarHidden: true,
   };
 
   render() {
-    return <BodyContainer title="Progress" />;
+    return <BodyContainer title="Stats" />;
   }
 }
 
-export default Progress;
+export default Stats;

@@ -1,9 +1,8 @@
 import React from 'react';
-import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Button, Icon, Toast } from 'native-base';
+import { Button, Icon, Toast, List } from 'native-base';
 import moment from 'moment';
 
 import BodyContainer from '../../../../components/BodyContainer';
@@ -23,9 +22,13 @@ import { COLORS } from '../../../../utils/ColorUtil';
 interface IExpenseDisplayObject {
   isDatePickerVisible: boolean;
   amount: number;
+  amountValid: boolean;
+  amountTouched: boolean;
   comments: string;
   date: string;
   time: string;
+  dateTimeValid: boolean;
+  dateTimeTouched: boolean;
   formattedDate: string;
 }
 
@@ -45,21 +48,34 @@ class AddExpense extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  createInitialSingleExpense = (callback?: () => void) => {
     const expenseObject: IExpenseDisplayObject = {
       isDatePickerVisible: false,
       amount: 0,
+      amountValid: false,
+      amountTouched: false,
       comments: '',
       date: '',
       time: '',
+      dateTimeValid: false,
+      dateTimeTouched: false,
       formattedDate: '',
     };
-    this.setState({ expenses: [expenseObject] });
+    this.setState({ expenses: [expenseObject] }, () => {
+      if (callback) {
+        callback();
+      }
+    });
+  };
+
+  componentDidMount() {
+    this.createInitialSingleExpense();
   }
 
   openDateTimePickerModal = (index: number) => {
     const { expenses } = this.state;
     expenses[index].isDatePickerVisible = true;
+    expenses[index].dateTimeTouched = true;
 
     this.setState({ expenses });
   };
@@ -71,9 +87,17 @@ class AddExpense extends React.Component<Props, State> {
     this.setState({ expenses });
   };
 
+  handleAmountTouch = (index: number) => {
+    const { expenses } = this.state;
+    expenses[index].amountTouched = true;
+
+    this.setState({ expenses });
+  };
+
   handleAmountChange = (amount: string, index: number) => {
     const { expenses } = this.state;
     expenses[index].amount = convertToCurrency(amount);
+    expenses[index].amountValid = true;
 
     this.setState({ expenses });
   };
@@ -93,6 +117,7 @@ class AddExpense extends React.Component<Props, State> {
     expenses[index].date = generateISODateString(date);
     expenses[index].time = generateFormattedTime(hour, minute);
     expenses[index].formattedDate = formatHumanReadableDate(date);
+    expenses[index].dateTimeValid = true;
 
     this.setState({ expenses });
   };
@@ -102,9 +127,13 @@ class AddExpense extends React.Component<Props, State> {
     const expenseObject: IExpenseDisplayObject = {
       isDatePickerVisible: false,
       amount: 0,
+      amountValid: false,
+      amountTouched: false,
       comments: '',
       date: '',
       time: '',
+      dateTimeValid: false,
+      dateTimeTouched: false,
       formattedDate: '',
     };
 
@@ -112,27 +141,65 @@ class AddExpense extends React.Component<Props, State> {
     this.setState({ expenses });
   };
 
+  deleteExpense = (index: number) => {
+    const { expenses } = this.state;
+    if (expenses.length === 1) {
+      return;
+    }
+
+    expenses.splice(index, 1);
+    this.setState({ expenses });
+  };
+
+  validateExpenses = (): boolean => {
+    const { expenses } = this.state;
+    let allValid = true;
+
+    const updatedExpenses = expenses.map(expense => {
+      if (!expense.amount) {
+        expense.amountValid = false;
+        allValid = false;
+      }
+
+      if (!expense.dateTimeValid) {
+        expense.dateTimeValid = false;
+        allValid = false;
+      }
+
+      expense.amountTouched = true;
+      expense.dateTimeTouched = true;
+
+      return expense;
+    });
+
+    if (!allValid) {
+      this.setState({ expenses: updatedExpenses });
+    }
+
+    return allValid;
+  };
+
   saveExpenses = () => {
+    const valid = this.validateExpenses();
+    if (!valid) {
+      return;
+    }
+
     const { expenses } = this.state;
     expenses.forEach(expense => {
       this.props.addExpense(expense.amount, expense.date, expense.time, expense.comments);
     });
-    this.setState(
-      {
-        expenses: [],
-      },
-      () => {
-        Toast.show({
-          text: 'WoHoo! All Expenses Saved!',
-          position: 'bottom',
-          type: 'success',
-          duration: 3000,
-          onClose: () => {
-            this.props.navigation.navigate('DisplayHome');
-          },
-        });
-      }
-    );
+    this.createInitialSingleExpense(() => {
+      Toast.show({
+        text: 'WoHoo! All Expenses Saved!',
+        position: 'bottom',
+        type: 'success',
+        duration: 300,
+        onClose: () => {
+          this.props.navigation.navigate('DisplayHome');
+        },
+      });
+    });
   };
 
   render() {
@@ -163,11 +230,10 @@ class AddExpense extends React.Component<Props, State> {
           </React.Fragment>
         }
       >
-        <FlatList
-          keyExtractor={(item, index) => `${index}`}
-          data={expenses}
-          renderItem={({ item: expense, index }) => (
+        <List>
+          {expenses.map((expense, index) => (
             <AddExpenseCard
+              key={`${index}`}
               closePicker={() => {
                 this.closeDateTimePickerModal(index);
               }}
@@ -177,18 +243,26 @@ class AddExpense extends React.Component<Props, State> {
               openPicker={() => {
                 this.openDateTimePickerModal(index);
               }}
+              amountTouched={() => {
+                this.handleAmountTouch(index);
+              }}
               handleAmountChange={amount => {
                 this.handleAmountChange(amount, index);
               }}
               handleCommentsChange={comments => {
                 this.handleCommentsChange(comments, index);
               }}
-              index={index}
+              deletePressed={() => {
+                this.deleteExpense(index);
+              }}
+              index={index + 1}
               isDateTimePickerVisible={expense.isDatePickerVisible}
               selectedDateTime={expense.date ? `${expense.formattedDate}, ${expense.time}` : ''}
+              amountError={!expense.amountValid && expense.amountTouched}
+              dateError={!expense.dateTimeValid && expense.dateTimeTouched}
             />
-          )}
-        />
+          ))}
+        </List>
       </BodyContainer>
     );
   }

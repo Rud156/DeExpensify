@@ -7,7 +7,7 @@ const style = StyleSheet.create({
     height: 40,
   },
   text: {
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 

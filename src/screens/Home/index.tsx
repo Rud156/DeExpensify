@@ -1,4 +1,5 @@
 import React from 'react';
+import { Root } from 'native-base';
 import { createStackNavigator } from 'react-navigation';
 
 import DisplayHome from './StackNavigator/DisplayHome';
@@ -21,7 +22,11 @@ class Home extends React.Component {
   };
 
   render() {
-    return <Navigator />;
+    return (
+      <Root>
+        <Navigator />
+      </Root>
+    );
   }
 }
 

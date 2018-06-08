@@ -17,7 +17,7 @@ export default StyleSheet.create({
   },
   mainHeaderText: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     color: COLORS.BLACK,
   },
   extraMargin: {
