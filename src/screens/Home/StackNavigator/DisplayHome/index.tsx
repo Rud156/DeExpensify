@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { StyleSheet, Dimensions } from 'react-native';
-import { View, Text, Button, Icon, Fab, List } from 'native-base';
+import { Dimensions, FlatList } from 'react-native';
+import { View, Text, Icon, Fab } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import * as Progress from 'react-native-progress';
 import moment, { Moment } from 'moment';
@@ -16,7 +16,7 @@ import {
   convertObjectExpensesToArray,
   getTotalExpenseForDate,
 } from '../../../../utils/ExpenseUtil';
-import { addExpense, removeExpense, updateExpense } from '../../../../core/actions/expenditure';
+import { removeExpense, updateExpense } from '../../../../core/actions/expenditure';
 
 import { IExpenditureReducer, IExpenseObject } from '../../../../core/reducers/expenditure';
 import { IProfileReducer } from '../../../../core/reducers/profile';
@@ -27,7 +27,6 @@ import style from './style';
 interface Props extends NavigationInjectedProps {
   expenditure: IExpenditureReducer;
   profile: IProfileReducer;
-  addExpense: (amount: number, date: string, time: string, comments: string) => any;
   updateExpense: (
     expenseId: string,
     amount: number,
@@ -110,7 +109,9 @@ class DisplayHome extends React.Component<Props, State> {
         </View>
         <View style={style.justifyCenter}>
           <Text style={style.mainHeaderText}>
-            Used {todaysTotalExpense} out of {profile.monthlyAmount}
+            Used {profile.currencySymbol}
+            {todaysTotalExpense} out of {profile.currencySymbol}
+            {profile.monthlyAmount}
           </Text>
         </View>
 
@@ -119,16 +120,18 @@ class DisplayHome extends React.Component<Props, State> {
             <Text style={{ fontSize: 20 }}>Today</Text>
           </View>
           <View>
-            <List>
-              {todaysExpenses.map(expense => (
+            <FlatList
+              keyExtractor={item => item.expenseId}
+              data={todaysExpenses}
+              renderItem={({ item: expense, index }) => (
                 <ExpenseList
                   amount={expense.amount}
                   time={expense.time}
                   comments={expense.comments}
                   currencySymbol={profile.currencySymbol}
                 />
-              ))}
-            </List>
+              )}
+            />
           </View>
         </View>
       </BodyContainer>
@@ -144,7 +147,6 @@ const mapStateToProps = (state: IReducer) => ({
 const matchDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      addExpense: addExpense,
       updateExpense: updateExpense,
       removeExpense: removeExpense,
     },

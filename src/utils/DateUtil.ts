@@ -8,7 +8,7 @@ export const formatHumanReadableDate = (date: DateType): string =>
 export const formatDateAgo = (date: DateType): string => moment(date).fromNow();
 
 export const generateFormattedTime = (hour: string | number, minute: string | number): string =>
-  `${hour} : ${minute}`;
+  `${hour}:${minute}`;
 
 export const generateISODateString = (date: DateType): string => moment(date).format('YYYY-MM-DD');
 

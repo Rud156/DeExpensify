@@ -1,11 +1,16 @@
 import React from 'react';
+import { FlatList } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Button, Icon, List, Fab } from 'native-base';
+import { Button, Icon, Toast } from 'native-base';
 import moment from 'moment';
 
 import BodyContainer from '../../../../components/BodyContainer';
 import AddExpenseCard from '../../../../components/AddExpenseCard';
 import FloatingButton from '../../../../components/FloatingButton';
+
+import { addExpense } from '../../../../core/actions/expenditure';
 
 import { convertToCurrency } from '../../../../utils/ExpenseUtil';
 import {
@@ -21,9 +26,12 @@ interface IExpenseDisplayObject {
   comments: string;
   date: string;
   time: string;
+  formattedDate: string;
 }
 
-interface Props extends NavigationInjectedProps {}
+interface Props extends NavigationInjectedProps {
+  addExpense: (amount: number, date: string, time: string, comments: string) => any;
+}
 interface State {
   expenses: IExpenseDisplayObject[];
 }
@@ -44,6 +52,7 @@ class AddExpense extends React.Component<Props, State> {
       comments: '',
       date: '',
       time: '',
+      formattedDate: '',
     };
     this.setState({ expenses: [expenseObject] });
   }
@@ -83,8 +92,47 @@ class AddExpense extends React.Component<Props, State> {
     const minute = parsedDate.minute();
     expenses[index].date = generateISODateString(date);
     expenses[index].time = generateFormattedTime(hour, minute);
+    expenses[index].formattedDate = formatHumanReadableDate(date);
 
     this.setState({ expenses });
+  };
+
+  addAnotherExpense = () => {
+    const { expenses } = this.state;
+    const expenseObject: IExpenseDisplayObject = {
+      isDatePickerVisible: false,
+      amount: 0,
+      comments: '',
+      date: '',
+      time: '',
+      formattedDate: '',
+    };
+
+    expenses.push(expenseObject);
+    this.setState({ expenses });
+  };
+
+  saveExpenses = () => {
+    const { expenses } = this.state;
+    expenses.forEach(expense => {
+      this.props.addExpense(expense.amount, expense.date, expense.time, expense.comments);
+    });
+    this.setState(
+      {
+        expenses: [],
+      },
+      () => {
+        Toast.show({
+          text: 'WoHoo! All Expenses Saved!',
+          position: 'bottom',
+          type: 'success',
+          duration: 3000,
+          onClose: () => {
+            this.props.navigation.navigate('DisplayHome');
+          },
+        });
+      }
+    );
   };
 
   render() {
@@ -105,16 +153,9 @@ class AddExpense extends React.Component<Props, State> {
         }
         fixedPositionButtons={
           <React.Fragment>
+            <FloatingButton onPress={this.saveExpenses} buttonText="Save" />
             <FloatingButton
-              onPress={() => {
-                console.log('Button Pressed');
-              }}
-              buttonText="Save"
-            />
-            <FloatingButton
-              onPress={() => {
-                console.log('Button Pressed');
-              }}
+              onPress={this.addAnotherExpense}
               buttonText="Add Another"
               buttonPositionRight={100}
               buttonColor={COLORS.ORANGE}
@@ -122,10 +163,11 @@ class AddExpense extends React.Component<Props, State> {
           </React.Fragment>
         }
       >
-        <List>
-          {expenses.map((expense, index) => (
+        <FlatList
+          keyExtractor={(item, index) => `${index}`}
+          data={expenses}
+          renderItem={({ item: expense, index }) => (
             <AddExpenseCard
-              key={`${index}`}
               closePicker={() => {
                 this.closeDateTimePickerModal(index);
               }}
@@ -141,16 +183,26 @@ class AddExpense extends React.Component<Props, State> {
               handleCommentsChange={comments => {
                 this.handleCommentsChange(comments, index);
               }}
+              index={index}
               isDateTimePickerVisible={expense.isDatePickerVisible}
-              selectedDateTime={
-                expense.date ? `${formatHumanReadableDate(expense.date)}, ${expense.time}` : ''
-              }
+              selectedDateTime={expense.date ? `${expense.formattedDate}, ${expense.time}` : ''}
             />
-          ))}
-        </List>
+          )}
+        />
       </BodyContainer>
     );
   }
 }
 
-export default AddExpense;
+const matchDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      addExpense: addExpense,
+    },
+    dispatch
+  );
+
+export default connect(
+  null,
+  matchDispatchToProps
+)(AddExpense);

@@ -1,7 +1,9 @@
 import chromaJS from 'chroma-js';
 
 export const COLORS = {
+  BLUE_LIGHT: '#6DAEFF',
   BLUE: '#2780e4',
+  BLUE_DARK: '#0054B1',
   GRAY: '#dfdfdf',
   WHITE: '#ffffff',
   BLACK: '#1a1a1a',
@@ -9,7 +11,9 @@ export const COLORS = {
   RED: '#C62828',
   YELLOW: '#E4BE27',
   LIGHT_GREEN: '#36E427',
+  ORANGE_LIGHT: '#FFCF71',
   ORANGE: '#F49E42',
+  ORANGE_DARK: '#BD6F0D',
 };
 
 export const getColorForValue = (
