@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Dimensions, FlatList } from 'react-native';
-import { View, Text, Icon, Fab, Button } from 'native-base';
+import { View, Text, Icon, Button } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { CircularProgress } from 'react-native-svg-circular-progress';
 import moment, { Moment } from 'moment';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import ExpenseList from '../../../../components/ExpensesList';
 import BodyContainer from '../../../../components/BodyContainer';
@@ -136,9 +137,15 @@ class DisplayHome extends React.Component<Props, State> {
               />
             ) : (
               <View>
-                <Icon
+                {/* <Icon
                   name="ios-sunny-outline"
                   style={{ fontSize: 50, color: COLORS.DARK_GREY, textAlign: 'center' }}
+                /> */}
+                <Entypo
+                  name="emoji-flirt"
+                  size={50}
+                  color={COLORS.DARK_GREY}
+                  style={{ textAlign: 'center' }}
                 />
                 <Text
                   style={{
