@@ -133,8 +133,6 @@ class DisplayHome extends React.Component<Props, State> {
                     currencySymbol={profile.currencySymbol}
                   />
                 )}
-                onTouchStart={this.handleTouchStart}
-                onScrollEndDrag={this.handleTouchEnd}
               />
             ) : (
               <View>
