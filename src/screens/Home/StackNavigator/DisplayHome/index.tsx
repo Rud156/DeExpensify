@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Dimensions, FlatList } from 'react-native';
-import { View, Text, Icon, Fab } from 'native-base';
+import { View, Text, Icon, Fab, Button } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { CircularProgress } from 'react-native-svg-circular-progress';
 import moment, { Moment } from 'moment';
@@ -73,18 +73,15 @@ class DisplayHome extends React.Component<Props, State> {
       expenditure.expenditures[todayISOString]
     );
     const todaysTotalExpense: number = getTotalExpenseForDate(todaysExpenses);
+    const percentage = (todaysTotalExpense / profile.monthlyAmount) * 100;
 
     return (
       <BodyContainer
         title={`Welcome, ${profile.username}`}
-        fixedPositionButtons={
-          <Fab
-            onPress={this.goToAddExpense}
-            style={style.bottomActionButton}
-            position="bottomRight"
-          >
+        rightComponent={
+          <Button transparent onPress={this.goToAddExpense}>
             <Icon name="add" style={{ color: COLORS.WHITE }} />
-          </Fab>
+          </Button>
         }
       >
         <View style={style.justifyCenter}>
@@ -93,7 +90,7 @@ class DisplayHome extends React.Component<Props, State> {
         <View style={style.justifyCenter}>
           <View style={[style.extraMargin, { alignSelf: 'center' }]}>
             <CircularProgress
-              percentage={(todaysTotalExpense / profile.monthlyAmount) * 100}
+              percentage={percentage > 100 ? 100 : percentage}
               blankColor={COLORS.GRAY}
               donutColor={getColorForValue(
                 todaysTotalExpense,
@@ -106,9 +103,7 @@ class DisplayHome extends React.Component<Props, State> {
               progressWidth={72}
             >
               <View>
-                <Text style={{ fontSize: 20 }}>
-                  {((todaysTotalExpense / profile.monthlyAmount) * 100).toFixed(2)} %
-                </Text>
+                <Text style={{ fontSize: 20 }}>{percentage.toFixed(2)} %</Text>
               </View>
             </CircularProgress>
           </View>
@@ -138,6 +133,8 @@ class DisplayHome extends React.Component<Props, State> {
                     currencySymbol={profile.currencySymbol}
                   />
                 )}
+                onTouchStart={this.handleTouchStart}
+                onScrollEndDrag={this.handleTouchEnd}
               />
             ) : (
               <View>
@@ -147,13 +144,13 @@ class DisplayHome extends React.Component<Props, State> {
                 />
                 <Text
                   style={{
-                    fontSize: 25,
+                    fontSize: 21,
                     color: COLORS.DARK_GREY,
                     textAlign: 'center',
                     marginTop: 14,
                   }}
                 >
-                  Nothing Spent
+                  No Spendings
                 </Text>
               </View>
             )}

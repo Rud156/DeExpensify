@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Button, Icon, Toast, List } from 'native-base';
+import { Button, Icon, Toast, List, View } from 'native-base';
 import moment from 'moment';
 
 import BodyContainer from '../../../../components/BodyContainer';
 import AddExpenseCard from '../../../../components/AddExpenseCard';
-import FloatingButton from '../../../../components/FloatingButton';
+import BottomButton from '../../../../components/BottomButton';
 
 import { addExpense } from '../../../../core/actions/expenditure';
 
@@ -18,6 +18,8 @@ import {
   formatHumanReadableDate,
 } from '../../../../utils/DateUtil';
 import { COLORS } from '../../../../utils/ColorUtil';
+
+import style from './style';
 
 interface IExpenseDisplayObject {
   isDatePickerVisible: boolean;
@@ -194,11 +196,10 @@ class AddExpense extends React.Component<Props, State> {
         text: 'WoHoo! All Expenses Saved!',
         position: 'bottom',
         type: 'success',
-        duration: 300,
-        onClose: () => {
-          this.props.navigation.navigate('DisplayHome');
-        },
+        duration: 1000,
       });
+
+      this.props.navigation.navigate('DisplayHome');
     });
   };
 
@@ -219,18 +220,17 @@ class AddExpense extends React.Component<Props, State> {
           </Button>
         }
         fixedPositionButtons={
-          <React.Fragment>
-            <FloatingButton onPress={this.saveExpenses} buttonText="Save" />
-            <FloatingButton
+          <View style={style.bottomView}>
+            <BottomButton
               onPress={this.addAnotherExpense}
               buttonText="Add Another"
-              buttonPositionRight={100}
               buttonColor={COLORS.ORANGE}
             />
-          </React.Fragment>
+            <BottomButton onPress={this.saveExpenses} buttonText="Save" />
+          </View>
         }
       >
-        <List>
+        <List style={{ marginBottom: 40 }}>
           {expenses.map((expense, index) => (
             <AddExpenseCard
               key={`${index}`}

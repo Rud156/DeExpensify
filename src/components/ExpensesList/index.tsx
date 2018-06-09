@@ -28,7 +28,7 @@ class ExpenseList extends React.PureComponent<Props, {}> {
         }}
       >
         <View style={{ marginVertical: 3 }}>
-          <Text style={{ textAlign: 'left' }}>{comments}</Text>
+          <Text style={{ textAlign: 'left', fontWeight: '500' }}>{comments}</Text>
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>

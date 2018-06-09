@@ -10,16 +10,14 @@ interface Props {
   onPress: () => void;
   buttonColor?: string;
   textColor?: string;
-  buttonPositionRight?: number;
 }
 
-class FloatingButton extends React.PureComponent<Props, {}> {
+class BottomButton extends React.PureComponent<Props, {}> {
   public static defaultProps: Props = {
     buttonText: 'Hello World',
     onPress: () => {},
     buttonColor: COLORS.BLUE,
     textColor: COLORS.WHITE,
-    buttonPositionRight: 20,
   };
 
   constructor(props: Props) {
@@ -27,17 +25,14 @@ class FloatingButton extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { buttonText, onPress, buttonColor, textColor, buttonPositionRight } = this.props;
+    const { buttonText, onPress, buttonColor, textColor } = this.props;
 
     return (
-      <Button
-        onPress={onPress}
-        style={[style.button, { backgroundColor: buttonColor, right: buttonPositionRight }]}
-      >
+      <Button onPress={onPress} style={[style.button, { backgroundColor: buttonColor }]}>
         <Text style={[style.text, { color: textColor }]}>{buttonText}</Text>
       </Button>
     );
   }
 }
 
-export default FloatingButton;
+export default BottomButton;

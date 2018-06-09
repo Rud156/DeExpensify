@@ -2,12 +2,13 @@ import { StyleSheet } from 'react-native';
 
 const style = StyleSheet.create({
   button: {
-    position: 'absolute',
-    bottom: 14,
     height: 40,
+    flex: 1,
   },
   text: {
+    flex: 1,
     fontSize: 12,
+    textAlign: 'center',
   },
 });
 

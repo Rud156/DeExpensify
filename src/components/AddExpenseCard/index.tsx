@@ -70,7 +70,7 @@ class AddExpenseCard extends React.PureComponent<Props, {}> {
                 <Icon name="md-trash" onPress={deletePressed} />
               </View>
               <Form>
-                <Item floatingLabel error={amountError}>
+                <Item stackedLabel error={amountError}>
                   <Label>How much did you spend?</Label>
                   <Input
                     keyboardType="numeric"
@@ -78,11 +78,11 @@ class AddExpenseCard extends React.PureComponent<Props, {}> {
                     onChangeText={handleAmountChange}
                   />
                 </Item>
-                <Item floatingLabel>
+                <Item stackedLabel>
                   <Label>Anything you wish to say?</Label>
                   <Input keyboardType="default" onChangeText={handleCommentsChange} />
                 </Item>
-                <Item style={{ marginTop: 21 }} error={dateError}>
+                <Item style={{ marginTop: 21 }} error={dateError} last>
                   <DateTimePicker
                     mode="datetime"
                     isVisible={isDateTimePickerVisible}
