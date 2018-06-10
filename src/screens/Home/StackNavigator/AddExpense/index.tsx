@@ -120,6 +120,7 @@ class AddExpense extends React.Component<Props, State> {
     expenses[index].time = generateFormattedTime(hour, minute);
     expenses[index].formattedDate = formatHumanReadableDate(date);
     expenses[index].dateTimeValid = true;
+    expenses[index].isDatePickerVisible = false;
 
     this.setState({ expenses });
   };
@@ -176,6 +177,12 @@ class AddExpense extends React.Component<Props, State> {
 
     if (!allValid) {
       this.setState({ expenses: updatedExpenses });
+      Toast.show({
+        text: 'Woah! Looks like you made a mistake',
+        position: 'bottom',
+        type: 'danger',
+        duration: 1000,
+      });
     }
 
     return allValid;
@@ -191,6 +198,7 @@ class AddExpense extends React.Component<Props, State> {
     expenses.forEach(expense => {
       this.props.addExpense(expense.amount, expense.date, expense.time, expense.comments);
     });
+
     this.createInitialSingleExpense(() => {
       Toast.show({
         text: 'WoHoo! All Expenses Saved!',
@@ -224,9 +232,14 @@ class AddExpense extends React.Component<Props, State> {
             <BottomButton
               onPress={this.addAnotherExpense}
               buttonText="Add Another"
+              buttonColor={COLORS.LIGHT_GRAY}
+              textColor={COLORS.BLACK}
+            />
+            <BottomButton
+              onPress={this.saveExpenses}
+              buttonText="Save"
               buttonColor={COLORS.ORANGE}
             />
-            <BottomButton onPress={this.saveExpenses} buttonText="Save" />
           </View>
         }
       >

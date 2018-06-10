@@ -12,12 +12,21 @@ const style = StyleSheet.create({
     paddingVertical: 7,
     marginVertical: 14,
   },
-  leftTextStyle: {
+  leftText: {
     fontWeight: '500',
   },
-  rightTextStyle: {
+  rightText: {
     color: COLORS.DARK_GREY,
     marginRight: 14,
+  },
+  rightInput: {
+    width: 50,
+    marginRight: 14,
+    height: 22,
+  },
+  input: {
+    color: COLORS.DARK_GREY,
+    fontSize: 16,
   },
 });
 

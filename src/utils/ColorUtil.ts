@@ -1,9 +1,10 @@
 import chromaJS from 'chroma-js';
 
 export const COLORS = {
-  BLUE_LIGHT: '#6DAEFF',
+  LIGHT_BLUE: '#6DAEFF',
   BLUE: '#2780e4',
   BLUE_DARK: '#0054B1',
+  LIGHT_GRAY: '#F7F7F7',
   GRAY: '#dfdfdf',
   WHITE: '#ffffff',
   BLACK: '#1a1a1a',
@@ -23,7 +24,9 @@ export const getColorForValue = (
   halfColor: string,
   maxColor: string
 ): string => {
-  const ratio = currentValue / maxValue;
+  let ratio = currentValue / maxValue;
+  ratio = ratio > 1 ? 1 : ratio;
+
   if (ratio < 0.5) {
     return chromaJS.mix(minColor, halfColor, ratio * 2).hex();
   } else {

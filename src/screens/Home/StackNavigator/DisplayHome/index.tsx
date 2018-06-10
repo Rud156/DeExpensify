@@ -155,7 +155,7 @@ class DisplayHome extends React.Component<Props, State> {
                     marginTop: 14,
                   }}
                 >
-                  No Spendings
+                  No Expenses Today
                 </Text>
               </View>
             )}

@@ -15,8 +15,8 @@ export interface IProfileReducer {
 const initialState: IProfileReducer = {
   monthlyAmount: 1500,
   currencySymbol: '$',
-  userImage: 'Rud156',
-  username: 'Rud156',
+  userImage: 'Rudrangshu',
+  username: 'Rudrangshu',
 };
 
 export const profileReducer = (state = initialState, action: any): IProfileReducer => {

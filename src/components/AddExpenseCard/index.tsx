@@ -92,9 +92,11 @@ class AddExpenseCard extends React.PureComponent<Props, {}> {
                   <Left>
                     <Button
                       onPress={openPicker}
-                      style={{ backgroundColor: COLORS.BLUE, marginRight: 3 }}
+                      style={{ backgroundColor: COLORS.LIGHT_GRAY, marginRight: 3 }}
                     >
-                      <Text style={{ fontSize: 12, textAlign: 'center' }}>When did you spend?</Text>
+                      <Text style={{ fontSize: 12, textAlign: 'center', color: COLORS.BLACK }}>
+                        When did you spend?
+                      </Text>
                     </Button>
                   </Left>
                   <Body>
