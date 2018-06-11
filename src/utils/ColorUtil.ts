@@ -3,7 +3,7 @@ import chromaJS from 'chroma-js';
 export const COLORS = {
   LIGHT_BLUE: '#6DAEFF',
   BLUE: '#4061DB',
-  DARK_BLUE: '#0054B1',
+  DARK_BLUE: '#334eaf',
   LIGHT_GRAY: '#F7F7F7',
   GRAY: '#D7D7D7',
   WHITE: '#ffffff',

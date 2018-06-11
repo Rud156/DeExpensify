@@ -238,7 +238,7 @@ class AddExpense extends React.Component<Props, State> {
             <BottomButton
               onPress={this.saveExpenses}
               buttonText="Save"
-              buttonColor={COLORS.BLUE}
+              buttonColor={COLORS.DARK_BLUE}
               textColor={COLORS.WHITE}
             />
           </View>
