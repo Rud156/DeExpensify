@@ -83,7 +83,7 @@ class DisplayHome extends React.Component<Props, State> {
 
     return (
       <BodyContainer
-        title={`Welcome, ${profile.username}`}
+        title={`Hi, ${profile.username}`}
         rightComponent={
           <Button transparent onPress={this.goToAddExpense}>
             <Icon name="add" style={{ color: COLORS.WHITE }} />
