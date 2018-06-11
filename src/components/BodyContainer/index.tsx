@@ -9,26 +9,40 @@ interface Props {
   children?: JSX.Element | any;
   leftComponent?: JSX.Element;
   rightComponent?: JSX.Element;
+
+  makeDarkBackground?: boolean;
 }
 
 class BodyContainer extends React.PureComponent<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
+  public static defaultProps: Props = {
+    title: '',
+    makeDarkBackground: false,
+  };
 
   render() {
-    const { title, children, fixedPositionButtons, leftComponent, rightComponent } = this.props;
+    const {
+      title,
+      children,
+      fixedPositionButtons,
+      leftComponent,
+      rightComponent,
+      makeDarkBackground,
+    } = this.props;
 
     return (
       <Container>
-        <Header style={{ backgroundColor: COLORS.BLUE }}>
+        <Header
+          androidStatusBarColor={COLORS.BLACK}
+          iosBarStyle="light-content"
+          style={{ backgroundColor: COLORS.BLACK }}
+        >
           {leftComponent && <Left>{leftComponent}</Left>}
           <Body>
             <Title>{title}</Title>
           </Body>
           {rightComponent && <Right>{rightComponent}</Right>}
         </Header>
-        <Content padder style={{ backgroundColor: COLORS.WHITE }}>
+        <Content style={{ backgroundColor: makeDarkBackground ? COLORS.BLACK : COLORS.WHITE }}>
           {children}
         </Content>
         {fixedPositionButtons}

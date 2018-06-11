@@ -11,9 +11,25 @@ export default StyleSheet.create({
   justifyCenter: {
     justifyContent: 'center',
   },
+  detailsHolder: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 14,
+  },
+  monthStatsHeader: {
+    color: COLORS.GRAY,
+    fontSize: 12,
+  },
+
+  monthStatsDetails: {
+    fontSize: 20,
+    fontWeight: '500',
+  },
   todaysDateText: {
     textAlign: 'center',
-    color: COLORS.DARK_GREY,
+    color: COLORS.WHITE,
   },
   mainHeaderText: {
     textAlign: 'center',

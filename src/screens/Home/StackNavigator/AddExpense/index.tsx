@@ -238,10 +238,12 @@ class AddExpense extends React.Component<Props, State> {
             <BottomButton
               onPress={this.saveExpenses}
               buttonText="Save"
-              buttonColor={COLORS.ORANGE}
+              buttonColor={COLORS.BLUE}
+              textColor={COLORS.WHITE}
             />
           </View>
         }
+        makeDarkBackground
       >
         <List style={{ marginBottom: 40 }}>
           {expenses.map((expense, index) => (

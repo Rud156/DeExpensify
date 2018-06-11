@@ -1,5 +1,6 @@
 import uuidV4 from 'uuid/v4';
 import { ADD_EXPENSE, UPDATE_EXPENSE, REMOVE_EXPENSE } from '../actions/expenditure';
+import { generateMonthString } from '../../utils/DateUtil';
 
 export interface IExpenseObject {
   expenseId: string;
@@ -35,9 +36,10 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
       }: { amount: number; date: string; time: string; comments: string } = action.payload;
 
       const expenseId = uuidV4();
+      const monthString = generateMonthString(date);
 
-      if (date in expenditures) {
-        const currentDateExpenditures = expenditures[date];
+      if (monthString in expenditures) {
+        const currentDateExpenditures = expenditures[monthString];
         currentDateExpenditures[expenseId] = {
           amount,
           comments,
@@ -46,9 +48,9 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
           expenseId,
         };
 
-        expenditures[date] = currentDateExpenditures;
+        expenditures[monthString] = currentDateExpenditures;
       } else {
-        expenditures[date] = {
+        expenditures[monthString] = {
           [expenseId]: {
             amount,
             comments,
@@ -76,8 +78,10 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
         comments: string;
         expenseId: string;
       } = action.payload;
-      if (date in expenditures) {
-        const currentDateExpenditures = expenditures[date];
+      const monthString = generateMonthString(date);
+
+      if (monthString in expenditures) {
+        const currentDateExpenditures = expenditures[monthString];
         currentDateExpenditures[expenseId] = {
           amount,
           date,
@@ -86,7 +90,7 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
           expenseId,
         };
 
-        expenditures[date] = currentDateExpenditures;
+        expenditures[monthString] = currentDateExpenditures;
       }
 
       return { expenditures };
@@ -94,13 +98,15 @@ export const expenditureReducer = (state = initialState, action: any): IExpendit
 
     case REMOVE_EXPENSE: {
       const { expenseId, date }: { expenseId: string; date: string } = action.payload;
-      if (date in expenditures) {
-        const currentDateExpenditures = expenditures[date];
+      const monthString = generateMonthString(date);
+
+      if (monthString in expenditures) {
+        const currentDateExpenditures = expenditures[monthString];
         if (expenseId in currentDateExpenditures) {
           delete currentDateExpenditures[expenseId];
         }
 
-        expenditures[date] = currentDateExpenditures;
+        expenditures[monthString] = currentDateExpenditures;
       }
 
       return { expenditures };

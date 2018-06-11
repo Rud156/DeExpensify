@@ -73,6 +73,12 @@ class App {
     Navigation.startTabBasedApp({
       tabs: [
         {
+          label: 'Profile',
+          screen: 'dexpensify.Profile',
+          icon: profileIcon,
+          navigatorStyle: {},
+        },
+        {
           label: 'Home',
           screen: 'dexpensify.Home',
           icon: homeIcon,
@@ -84,16 +90,10 @@ class App {
           icon: statsIcon,
           navigatorStyle: {},
         },
-        {
-          label: 'Profile',
-          screen: 'dexpensify.Profile',
-          icon: profileIcon,
-          navigatorStyle: {},
-        },
       ],
       appStyle: {
         // @ts-ignore
-        tabBarSelectedButtonColor: COLORS.BLUE,
+        tabBarSelectedButtonColor: COLORS.BLACK,
         tabBarButtonColor: COLORS.GRAY,
         orientation: 'portrait',
         keepStyleAcrossPush: true,

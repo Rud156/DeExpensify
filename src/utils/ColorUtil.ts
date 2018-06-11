@@ -2,12 +2,12 @@ import chromaJS from 'chroma-js';
 
 export const COLORS = {
   LIGHT_BLUE: '#6DAEFF',
-  BLUE: '#2780e4',
-  BLUE_DARK: '#0054B1',
+  BLUE: '#4061DB',
+  DARK_BLUE: '#0054B1',
   LIGHT_GRAY: '#F7F7F7',
-  GRAY: '#dfdfdf',
+  GRAY: '#D7D7D7',
   WHITE: '#ffffff',
-  BLACK: '#1a1a1a',
+  BLACK: '#232427',
   DARK_GREY: '#767677',
   RED: '#C62828',
   YELLOW: '#E4BE27',
@@ -15,6 +15,7 @@ export const COLORS = {
   ORANGE_LIGHT: '#FFCF71',
   ORANGE: '#F49E42',
   ORANGE_DARK: '#BD6F0D',
+  PURE_BLACK: '#000000',
 };
 
 export const getColorForValue = (

@@ -5,7 +5,7 @@ const style = StyleSheet.create({
   username: {
     textAlign: 'center',
     fontSize: 25,
-    color: COLORS.DARK_GREY,
+    color: COLORS.GRAY,
     marginRight: 14,
   },
   usernameHolder: {
@@ -16,11 +16,11 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   userImage: {
-    borderRadius: 50,
     alignSelf: 'center',
     height: 100,
     width: 100,
     marginTop: 21,
+    borderRadius: 50,
   },
   usernameInputHolder: {
     width: 150,
@@ -29,7 +29,7 @@ const style = StyleSheet.create({
     height: 22,
   },
   usernameInput: {
-    color: COLORS.DARK_GREY,
+    color: COLORS.GRAY,
     fontSize: 25,
   },
 });

@@ -9,7 +9,6 @@ export const convertObjectExpensesToArray = (objectToConvert: any): IExpenseObje
   }
 
   const keys = Object.keys(objectToConvert);
-
   const objectArray: any[] = keys.map(key => ({
     ...objectToConvert[key],
   }));

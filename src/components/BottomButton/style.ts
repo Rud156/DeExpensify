@@ -4,6 +4,7 @@ const style = StyleSheet.create({
   button: {
     height: 40,
     flex: 1,
+    borderRadius: 0,
   },
   text: {
     flex: 1,

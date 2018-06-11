@@ -12,10 +12,11 @@ import ExpenseList from '../../../../components/ExpensesList';
 import BodyContainer from '../../../../components/BodyContainer';
 
 import { getColorForValue, COLORS } from '../../../../utils/ColorUtil';
-import { formatHumanReadableDate, generateISODateString } from '../../../../utils/DateUtil';
+import { generateMonthString, generateISODateString } from '../../../../utils/DateUtil';
 import {
   convertObjectExpensesToArray,
   getTotalExpenseForDate,
+  subtractCurrency,
 } from '../../../../utils/ExpenseUtil';
 import { removeExpense, updateExpense } from '../../../../core/actions/expenditure';
 
@@ -69,12 +70,16 @@ class DisplayHome extends React.Component<Props, State> {
     const { expenditure, profile } = this.props;
 
     const todayISOString = generateISODateString(today);
+    const monthString = generateMonthString(today);
 
-    const todaysExpenses: IExpenseObject[] = convertObjectExpensesToArray(
-      expenditure.expenditures[todayISOString]
+    const monthExpenses: IExpenseObject[] = convertObjectExpensesToArray(
+      expenditure.expenditures[monthString]
     );
-    const todaysTotalExpense: number = getTotalExpenseForDate(todaysExpenses);
-    const percentage = (todaysTotalExpense / profile.monthlyAmount) * 100;
+    const todayExpenses = monthExpenses.filter(expense => expense.date === todayISOString);
+
+    const monthTotalExpenses: number = getTotalExpenseForDate(monthExpenses);
+    const totalAmountLeft = subtractCurrency(profile.monthlyAmount, monthTotalExpenses);
+    const percentage = (monthTotalExpenses / profile.monthlyAmount) * 100;
 
     return (
       <BodyContainer
@@ -85,36 +90,58 @@ class DisplayHome extends React.Component<Props, State> {
           </Button>
         }
       >
-        <View style={style.justifyCenter}>
-          <Text style={style.todaysDateText}>{formatHumanReadableDate(today)}</Text>
-        </View>
-        <View style={style.justifyCenter}>
-          <View style={[style.extraMargin, { alignSelf: 'center' }]}>
-            <CircularProgress
-              percentage={percentage > 100 ? 100 : percentage}
-              blankColor={COLORS.GRAY}
-              donutColor={getColorForValue(
-                todaysTotalExpense,
-                profile.monthlyAmount,
-                minProgressColor,
-                halfProgressColor,
-                maxProgressColor
-              )}
-              size={150}
-              progressWidth={72}
-            >
-              <View>
-                <Text style={{ fontSize: 20 }}>{percentage.toFixed(2)} %</Text>
-              </View>
-            </CircularProgress>
+        <View style={{ backgroundColor: COLORS.BLACK }}>
+          <View style={style.justifyCenter}>
+            <Text style={style.todaysDateText}>{moment(today).format('MMMM, YYYY')}</Text>
           </View>
-        </View>
-        <View style={style.justifyCenter}>
-          <Text style={style.mainHeaderText}>
-            Used {profile.currencySymbol}
-            {todaysTotalExpense} out of {profile.currencySymbol}
-            {profile.monthlyAmount}
-          </Text>
+
+          <View style={style.justifyCenter}>
+            <View style={[style.extraMargin, { alignSelf: 'center' }]}>
+              <CircularProgress
+                percentage={percentage > 100 ? 100 : percentage}
+                blankColor={COLORS.PURE_BLACK}
+                donutColor={getColorForValue(
+                  monthTotalExpenses,
+                  profile.monthlyAmount,
+                  minProgressColor,
+                  halfProgressColor,
+                  maxProgressColor
+                )}
+                size={150}
+                progressWidth={72}
+                fillColor={COLORS.BLACK}
+              >
+                <View>
+                  <Text style={{ fontSize: 20, color: COLORS.LIGHT_GRAY, fontWeight: '500' }}>
+                    {Math.round(percentage)} %
+                  </Text>
+                </View>
+              </CircularProgress>
+            </View>
+          </View>
+
+          <View style={style.detailsHolder}>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ marginVertical: 3 }}>
+                <Text style={style.monthStatsHeader}>EXPENSE</Text>
+              </View>
+              <View>
+                <Text style={[style.monthStatsDetails, { color: COLORS.RED }]}>
+                  {profile.currencySymbol} {monthTotalExpenses}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <View style={{ marginVertical: 3 }}>
+                <Text style={style.monthStatsHeader}>BALANCE</Text>
+              </View>
+              <View>
+                <Text style={[style.monthStatsDetails, { color: COLORS.LIGHT_GREEN }]}>
+                  {profile.currencySymbol} {totalAmountLeft}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
 
         <View>
@@ -122,10 +149,10 @@ class DisplayHome extends React.Component<Props, State> {
             <Text style={{ fontSize: 20 }}>Today</Text>
           </View>
           <View>
-            {todaysExpenses.length !== 0 ? (
+            {todayExpenses.length !== 0 ? (
               <FlatList
                 keyExtractor={item => item.expenseId}
-                data={todaysExpenses}
+                data={todayExpenses}
                 renderItem={({ item: expense, index }) => (
                   <ExpenseList
                     amount={expense.amount}
@@ -137,10 +164,6 @@ class DisplayHome extends React.Component<Props, State> {
               />
             ) : (
               <View>
-                {/* <Icon
-                  name="ios-sunny-outline"
-                  style={{ fontSize: 50, color: COLORS.DARK_GREY, textAlign: 'center' }}
-                /> */}
                 <Entypo
                   name="emoji-flirt"
                   size={50}

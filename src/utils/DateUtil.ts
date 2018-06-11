@@ -12,6 +12,8 @@ export const generateFormattedTime = (hour: string | number, minute: string | nu
 
 export const generateISODateString = (date: DateType): string => moment(date).format('YYYY-MM-DD');
 
+export const generateMonthString = (date: DateType): string => moment(date).format('YYYY-MM');
+
 export const isSameDate = (firstDate: DateType, secondDate: DateType): boolean => {
   const parsedFirstDate = moment(generateISODateString(firstDate));
   const parsedSecondDate = moment(generateISODateString(secondDate));

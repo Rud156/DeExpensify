@@ -156,59 +156,61 @@ class Profile extends React.Component<Props, State> {
 
     return (
       <BodyContainer title="Profile">
-        <View >
-          {!imageLoadError ? (
-            <Thumbnail
-              source={{
-                uri: getAvatarURL(profile.userImage),
-              }}
-              resizeMode="stretch"
-              style={style.userImage}
-              onError={() => {
-                this.setState({ imageLoadError: true });
-              }}
-            />
-          ) : (
-            <MaterialIcons
-              name="person"
-              size={100}
-              color={COLORS.ORANGE}
-              style={[style.userImage, { borderWidth: 1, borderColor: COLORS.ORANGE }]}
-            />
-          )}
-        </View>
-        <View style={style.usernameHolder}>
-          {!displayUsernameEditTextField ? (
-            <React.Fragment>
-              <Text style={style.username}>{profile.username}</Text>
-              <MaterialIcons
-                name="edit"
-                color={COLORS.BLACK}
-                onPress={this.handleEditUserName}
-                style={{ paddingTop: 10 }}
+        <View style={{ backgroundColor: COLORS.BLACK, paddingBottom: 14 }}>
+          <View>
+            {!imageLoadError ? (
+              <Thumbnail
+                source={{
+                  uri: getAvatarURL(profile.userImage),
+                }}
+                resizeMode="stretch"
+                style={style.userImage}
+                onError={() => {
+                  this.setState({ imageLoadError: true });
+                }}
               />
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Item
-                style={[style.usernameInputHolder, { borderBottomWidth: usernameError ? 1 : 0 }]}
-                error={usernameError}
-              >
-                <Input
-                  defaultValue={username}
-                  style={style.usernameInput}
-                  onChangeText={this.handleUsernameChange}
-                  autoFocus
+            ) : (
+              <MaterialIcons
+                name="person"
+                size={100}
+                color={COLORS.ORANGE}
+                style={[style.userImage, { borderWidth: 1, borderColor: COLORS.ORANGE }]}
+              />
+            )}
+          </View>
+          <View style={style.usernameHolder}>
+            {!displayUsernameEditTextField ? (
+              <React.Fragment>
+                <Text style={style.username}>{profile.username}</Text>
+                <MaterialIcons
+                  name="edit"
+                  color={COLORS.LIGHT_GRAY}
+                  onPress={this.handleEditUserName}
+                  style={{ paddingTop: 3 }}
                 />
-              </Item>
-              <MaterialIcons
-                name="save"
-                color={COLORS.BLACK}
-                onPress={this.handleUsernameSave}
-                style={{ paddingTop: 3 }}
-              />
-            </React.Fragment>
-          )}
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Item
+                  style={[style.usernameInputHolder, { borderBottomWidth: usernameError ? 1 : 0 }]}
+                  error={usernameError}
+                >
+                  <Input
+                    defaultValue={username}
+                    style={style.usernameInput}
+                    onChangeText={this.handleUsernameChange}
+                    autoFocus
+                  />
+                </Item>
+                <MaterialIcons
+                  name="save"
+                  color={COLORS.LIGHT_GRAY}
+                  onPress={this.handleUsernameSave}
+                  style={{ paddingTop: 3 }}
+                />
+              </React.Fragment>
+            )}
+          </View>
         </View>
         <View style={{ padding: 14 }}>
           <DataList
