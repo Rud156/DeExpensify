@@ -156,7 +156,7 @@ class Profile extends React.Component<Props, State> {
 
     return (
       <BodyContainer title="Profile">
-        <View style={{ backgroundColor: COLORS.BLACK, paddingBottom: 14 }}>
+        <View style={style.containerView}>
           <View style={style.userImageHolder}>
             {!imageLoadError ? (
               <Thumbnail
@@ -172,7 +172,7 @@ class Profile extends React.Component<Props, State> {
             ) : (
               <MaterialIcons
                 name="person"
-                size={100}
+                size={150}
                 color={COLORS.WHITE}
                 style={[style.userImage]}
               />

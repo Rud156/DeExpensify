@@ -90,7 +90,7 @@ class DisplayHome extends React.Component<Props, State> {
           </Button>
         }
       >
-        <View style={{ backgroundColor: COLORS.BLACK }}>
+        <View style={{ backgroundColor: COLORS.BLACK, height: 280 }}>
           <View style={style.justifyCenter}>
             <Text style={style.todaysDateText}>{moment(today).format('MMMM, YYYY')}</Text>
           </View>

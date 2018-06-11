@@ -14,4 +14,4 @@ export const titleCase = (data: string): string =>
 export const capitalCase = (data: string): string => data.charAt(0).toUpperCase() + data.slice(1);
 
 export const getAvatarURL = (data: string): string =>
-  `https://api.adorable.io/avatars/100/${data}.png`;
+  `https://api.adorable.io/avatars/150/${data}.png`;

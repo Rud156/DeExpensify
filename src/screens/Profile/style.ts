@@ -2,6 +2,14 @@ import { StyleSheet } from 'react-native';
 import { COLORS } from '../../utils/ColorUtil';
 
 const style = StyleSheet.create({
+  containerView: {
+    backgroundColor: COLORS.BLACK,
+    height: 280,
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
   username: {
     textAlign: 'center',
     fontSize: 25,
@@ -9,23 +17,22 @@ const style = StyleSheet.create({
     marginRight: 14,
   },
   usernameHolder: {
-    marginTop: 14,
+    paddingTop: 35,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   userImage: {
-    height: 100,
-    width: 100,
+    height: 150,
+    width: 150,
   },
   userImageHolder: {
-    marginTop: 21,
-    borderRadius: 55,
+    borderRadius: 80,
     borderColor: COLORS.WHITE,
     borderWidth: 1,
-    width: 110,
-    height: 110,
+    width: 160,
+    height: 160,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
