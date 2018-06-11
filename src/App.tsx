@@ -73,12 +73,6 @@ class App {
     Navigation.startTabBasedApp({
       tabs: [
         {
-          label: 'Profile',
-          screen: 'dexpensify.Profile',
-          icon: profileIcon,
-          navigatorStyle: {},
-        },
-        {
           label: 'Home',
           screen: 'dexpensify.Home',
           icon: homeIcon,
@@ -88,6 +82,12 @@ class App {
           label: 'Stats',
           screen: 'dexpensify.Stats',
           icon: statsIcon,
+          navigatorStyle: {},
+        },
+        {
+          label: 'Profile',
+          screen: 'dexpensify.Profile',
+          icon: profileIcon,
           navigatorStyle: {},
         },
       ],

@@ -16,11 +16,20 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   userImage: {
-    alignSelf: 'center',
     height: 100,
     width: 100,
+  },
+  userImageHolder: {
     marginTop: 21,
-    borderRadius: 50,
+    borderRadius: 55,
+    borderColor: COLORS.WHITE,
+    borderWidth: 1,
+    width: 110,
+    height: 110,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   usernameInputHolder: {
     width: 150,
