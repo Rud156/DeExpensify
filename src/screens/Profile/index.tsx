@@ -1,4 +1,5 @@
 import React from 'react';
+import { Animated, Easing } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Thumbnail, View, Text, Item, Input } from 'native-base';
@@ -44,6 +45,8 @@ interface State {
   monthlyAmountError: boolean;
   currencySymbolError: boolean;
   usernameError: boolean;
+
+  animatedValue: Animated.Value;
 }
 
 class Profile extends React.Component<Props, State> {
@@ -65,7 +68,22 @@ class Profile extends React.Component<Props, State> {
       monthlyAmountError: false,
       currencySymbolError: false,
       usernameError: false,
+
+      animatedValue: new Animated.Value(0),
     };
+  }
+
+  componentDidMount() {
+    const { animatedValue } = this.state;
+    animatedValue.setValue(0);
+
+    setTimeout(() => {
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.inOut(Easing.poly(4)),
+      }).start();
+    }, 200);
   }
 
   handleEditMonthlyAmount = () => {
@@ -151,13 +169,23 @@ class Profile extends React.Component<Props, State> {
       displayMonthlyAmountEditTextField,
       displayCurrencySymbolEditTextField,
       displayUsernameEditTextField,
+      animatedValue,
     } = this.state;
     const { profile } = this.props;
+
+    const opacity = animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+    });
+    const top = animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [21, 0],
+    });
 
     return (
       <BodyContainer title="Profile">
         <View style={style.containerView}>
-          <View style={style.userImageHolder}>
+          <Animated.View style={[style.userImageHolder, { top, opacity }]}>
             {!imageLoadError ? (
               <Thumbnail
                 source={{
@@ -177,8 +205,8 @@ class Profile extends React.Component<Props, State> {
                 style={[style.userImage]}
               />
             )}
-          </View>
-          <View style={style.usernameHolder}>
+          </Animated.View>
+          <Animated.View style={[style.usernameHolder, { top, opacity }]}>
             {!displayUsernameEditTextField ? (
               <React.Fragment>
                 <Text style={style.username}>{profile.username}</Text>
@@ -210,9 +238,9 @@ class Profile extends React.Component<Props, State> {
                 />
               </React.Fragment>
             )}
-          </View>
+          </Animated.View>
         </View>
-        <View style={{ padding: 14 }}>
+        <Animated.View style={{ padding: 14, top, opacity }}>
           <DataList
             leftText="Monthly Amount"
             rightText={profile.monthlyAmount}
@@ -231,7 +259,7 @@ class Profile extends React.Component<Props, State> {
             displayTextField={displayCurrencySymbolEditTextField}
             error={currencySymbolError}
           />
-        </View>
+        </Animated.View>
       </BodyContainer>
     );
   }
