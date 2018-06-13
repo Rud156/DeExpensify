@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Dimensions, FlatList, Alert } from 'react-native';
+import { Dimensions, FlatList, Alert, Animated, Easing } from 'react-native';
 import { View, Text, Icon, Button } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { CircularProgress } from 'react-native-svg-circular-progress';
@@ -48,6 +48,8 @@ interface State {
   minProgressColor: string;
   halfProgressColor: string;
   maxProgressColor: string;
+
+  animatedValue: Animated.Value;
 }
 
 const { width, height } = Dimensions.get('window');
@@ -62,11 +64,37 @@ class DisplayHome extends React.Component<Props, State> {
       minProgressColor: COLORS.LIGHT_GREEN,
       halfProgressColor: COLORS.YELLOW,
       maxProgressColor: COLORS.RED,
+
+      animatedValue: new Animated.Value(0),
     };
+
+    props.navigation.addListener('didFocus', this.handleRouteActive);
   }
 
+  handleRouteActive = () => {
+    const { animatedValue } = this.state;
+    animatedValue.setValue(0);
+
+    setTimeout(() => {
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.inOut(Easing.bounce),
+      }).start();
+    }, 200);
+  };
+
   goToAddExpense = () => {
-    this.props.navigation.navigate('AddExpense');
+    const { animatedValue } = this.state;
+    animatedValue.setValue(1);
+
+    Animated.timing(animatedValue, {
+      toValue: 0,
+      duration: 300,
+      easing: Easing.inOut(Easing.bounce),
+    }).start(() => {
+      this.props.navigation.navigate('AddExpense');
+    });
   };
 
   handleDeleteExpense = (expense: IExpenseObject) => {
@@ -99,7 +127,13 @@ class DisplayHome extends React.Component<Props, State> {
   };
 
   render() {
-    const { today, minProgressColor, halfProgressColor, maxProgressColor } = this.state;
+    const {
+      today,
+      minProgressColor,
+      halfProgressColor,
+      maxProgressColor,
+      animatedValue,
+    } = this.state;
     const { expenditure, profile } = this.props;
 
     const todayISOString = generateISODateString(today);
@@ -114,6 +148,15 @@ class DisplayHome extends React.Component<Props, State> {
     const totalAmountLeft = subtractCurrency(profile.monthlyAmount, monthTotalExpenses);
     const percentage = (monthTotalExpenses / profile.monthlyAmount) * 100;
 
+    const opacity = animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+    });
+    const top = animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [21, 0],
+    });
+
     return (
       <BodyContainer
         title={`Hi, ${profile.username}`}
@@ -124,11 +167,11 @@ class DisplayHome extends React.Component<Props, State> {
         }
       >
         <View style={{ backgroundColor: COLORS.BLACK, height: 280 }}>
-          <View style={style.justifyCenter}>
+          <Animated.View style={[style.justifyCenter, { opacity, top }]}>
             <Text style={style.todaysDateText}>{moment(today).format('MMMM, YYYY')}</Text>
-          </View>
+          </Animated.View>
 
-          <View style={style.justifyCenter}>
+          <Animated.View style={[style.justifyCenter, { opacity, top }]}>
             <View style={[style.extraMargin, { alignSelf: 'center' }]}>
               <CircularProgress
                 percentage={percentage > 100 ? 100 : percentage}
@@ -151,9 +194,9 @@ class DisplayHome extends React.Component<Props, State> {
                 </View>
               </CircularProgress>
             </View>
-          </View>
+          </Animated.View>
 
-          <View style={style.detailsHolder}>
+          <Animated.View style={[style.detailsHolder, { top, opacity }]}>
             <View style={{ flex: 1, alignItems: 'center' }}>
               <View style={{ marginVertical: 3 }}>
                 <Text style={style.monthStatsHeader}>EXPENSE</Text>
@@ -174,10 +217,10 @@ class DisplayHome extends React.Component<Props, State> {
                 </Text>
               </View>
             </View>
-          </View>
+          </Animated.View>
         </View>
 
-        <View>
+        <Animated.View style={{ top, opacity }}>
           <View style={{ marginVertical: 14, marginLeft: 14 }}>
             <Text style={{ fontSize: 20 }}>Today</Text>
           </View>
@@ -219,7 +262,7 @@ class DisplayHome extends React.Component<Props, State> {
               </View>
             )}
           </View>
-        </View>
+        </Animated.View>
       </BodyContainer>
     );
   }
