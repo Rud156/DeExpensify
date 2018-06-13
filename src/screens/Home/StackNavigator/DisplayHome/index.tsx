@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Dimensions, FlatList, Alert, Animated, Easing } from 'react-native';
 import { View, Text, Icon, Button } from 'native-base';
-import { NavigationInjectedProps } from 'react-navigation';
+import { NavigationInjectedProps, NavigationEventSubscription } from 'react-navigation';
 import { CircularProgress } from 'react-native-svg-circular-progress';
 import moment, { Moment } from 'moment';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -52,9 +52,9 @@ interface State {
   animatedValue: Animated.Value;
 }
 
-const { width, height } = Dimensions.get('window');
-
 class DisplayHome extends React.Component<Props, State> {
+  didFocusSubscription: NavigationEventSubscription;
+
   constructor(props: Props) {
     super(props);
 
@@ -68,7 +68,11 @@ class DisplayHome extends React.Component<Props, State> {
       animatedValue: new Animated.Value(0),
     };
 
-    props.navigation.addListener('didFocus', this.handleRouteActive);
+    this.didFocusSubscription = props.navigation.addListener('didFocus', this.handleRouteActive);
+  }
+
+  componentWillUnmount() {
+    this.didFocusSubscription.remove();
   }
 
   handleRouteActive = () => {
@@ -79,7 +83,7 @@ class DisplayHome extends React.Component<Props, State> {
       Animated.timing(animatedValue, {
         toValue: 1,
         duration: 300,
-        easing: Easing.inOut(Easing.bounce),
+        easing: Easing.inOut(Easing.poly(4)),
       }).start();
     }, 200);
   };
@@ -91,7 +95,7 @@ class DisplayHome extends React.Component<Props, State> {
     Animated.timing(animatedValue, {
       toValue: 0,
       duration: 300,
-      easing: Easing.inOut(Easing.bounce),
+      easing: Easing.inOut(Easing.poly(4)),
     }).start(() => {
       this.props.navigation.navigate('AddExpense');
     });

@@ -6,7 +6,6 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     position: 'absolute',
-    bottom: 0,
   },
 });
 
