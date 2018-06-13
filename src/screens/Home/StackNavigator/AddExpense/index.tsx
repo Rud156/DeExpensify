@@ -61,7 +61,7 @@ class AddExpense extends React.Component<Props, State> {
 
     this.didFocusSubscription = props.navigation.addListener('didFocus', () => {
       BackHandler.addEventListener('hardwareBackPress', this.handleRouteExit);
-      this.handleRouteActive();
+      this.handleRouteEnter();
     });
     this.willBlurSubscription = null;
   }
@@ -77,7 +77,7 @@ class AddExpense extends React.Component<Props, State> {
     this.willBlurSubscription && this.willBlurSubscription.remove();
   }
 
-  handleRouteActive = () => {
+  handleRouteEnter = () => {
     const { firstAnimatedValue, secondAnimatedValue } = this.state;
     firstAnimatedValue.setValue(0);
     secondAnimatedValue.setValue(0);

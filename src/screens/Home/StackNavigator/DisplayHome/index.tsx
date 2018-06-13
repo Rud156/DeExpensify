@@ -68,14 +68,14 @@ class DisplayHome extends React.Component<Props, State> {
       animatedValue: new Animated.Value(0),
     };
 
-    this.didFocusSubscription = props.navigation.addListener('didFocus', this.handleRouteActive);
+    this.didFocusSubscription = props.navigation.addListener('didFocus', this.handleRouteEnter);
   }
 
   componentWillUnmount() {
     this.didFocusSubscription.remove();
   }
 
-  handleRouteActive = () => {
+  handleRouteEnter = () => {
     const { animatedValue } = this.state;
     animatedValue.setValue(0);
 

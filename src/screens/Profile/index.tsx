@@ -1,5 +1,6 @@
 import React from 'react';
 import { Animated, Easing } from 'react-native';
+import { NavigationComponentProps, NavigatorEvent } from 'react-native-navigation';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Thumbnail, View, Text, Item, Input } from 'native-base';
@@ -24,7 +25,7 @@ import { IReducer } from '../../core/reducers';
 
 import style from './style';
 
-interface Props {
+interface Props extends NavigationComponentProps {
   profile: IProfileReducer;
   setMonthlyAmount: (amount: number) => any;
   setCurrencySymbol: (symbol: string) => any;
@@ -47,6 +48,7 @@ interface State {
   usernameError: boolean;
 
   animatedValue: Animated.Value;
+  animationPerformed: boolean;
 }
 
 class Profile extends React.Component<Props, State> {
@@ -70,11 +72,28 @@ class Profile extends React.Component<Props, State> {
       usernameError: false,
 
       animatedValue: new Animated.Value(0),
+      animationPerformed: false,
     };
+
+    props.navigator.setOnNavigatorEvent(this.handleRouteAnimations);
   }
 
-  componentDidMount() {
-    const { animatedValue } = this.state;
+  handleRouteAnimations = (event: NavigatorEvent) => {
+    switch (event.id) {
+      case 'didAppear':
+        this.handleRouteEnter();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  handleRouteEnter = () => {
+    const { animatedValue, animationPerformed } = this.state;
+    if (animationPerformed) {
+      return;
+    }
     animatedValue.setValue(0);
 
     setTimeout(() => {
@@ -82,9 +101,11 @@ class Profile extends React.Component<Props, State> {
         toValue: 1,
         duration: 300,
         easing: Easing.inOut(Easing.poly(4)),
-      }).start();
+      }).start(() => {
+        this.setState({ animationPerformed: true });
+      });
     }, 200);
-  }
+  };
 
   handleEditMonthlyAmount = () => {
     this.setState({ displayMonthlyAmountEditTextField: true });
