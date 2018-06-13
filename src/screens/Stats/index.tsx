@@ -1,5 +1,11 @@
 import React from 'react';
+import { View, Text } from 'native-base';
+
 import BodyContainer from '../../components/BodyContainer';
+
+import { removeExpense } from '../../core/actions/expenditure';
+
+import style from './style';
 
 class Stats extends React.Component {
   static navigatorStyle = {
@@ -7,7 +13,11 @@ class Stats extends React.Component {
   };
 
   render() {
-    return <BodyContainer title="Stats" />;
+    return (
+      <BodyContainer title="Stats">
+        <View style={style.containerView} />
+      </BodyContainer>
+    );
   }
 }
 

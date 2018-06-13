@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Dimensions, FlatList } from 'react-native';
+import { Dimensions, FlatList, Alert } from 'react-native';
 import { View, Text, Icon, Button } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { CircularProgress } from 'react-native-svg-circular-progress';
@@ -12,7 +12,11 @@ import ExpenseList from '../../../../components/ExpensesList';
 import BodyContainer from '../../../../components/BodyContainer';
 
 import { getColorForValue, COLORS } from '../../../../utils/ColorUtil';
-import { generateMonthString, generateISODateString } from '../../../../utils/DateUtil';
+import {
+  generateMonthString,
+  generateISODateString,
+  formatHumanReadableDate,
+} from '../../../../utils/DateUtil';
 import {
   convertObjectExpensesToArray,
   getTotalExpenseForDate,
@@ -63,6 +67,35 @@ class DisplayHome extends React.Component<Props, State> {
 
   goToAddExpense = () => {
     this.props.navigation.navigate('AddExpense');
+  };
+
+  handleDeleteExpense = (expense: IExpenseObject) => {
+    const { expenseId, date } = expense;
+    this.props.removeExpense(expenseId, date);
+  };
+
+  deleteExpense = (expense: IExpenseObject) => {
+    const { profile } = this.props;
+
+    Alert.alert(
+      `Delete expense worth ${profile.currencySymbol}${expense.amount}`,
+      `Expense was made on ${formatHumanReadableDate(expense.date)} at ${expense.time}`,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            console.log('Delete Cancelled');
+          },
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            this.handleDeleteExpense(expense);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   render() {
@@ -159,6 +192,9 @@ class DisplayHome extends React.Component<Props, State> {
                     time={expense.time}
                     comments={expense.comments}
                     currencySymbol={profile.currencySymbol}
+                    deleteExpense={() => {
+                      this.deleteExpense(expense);
+                    }}
                   />
                 )}
               />

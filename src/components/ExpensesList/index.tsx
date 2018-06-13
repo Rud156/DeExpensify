@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content, Left, Right, View, Text, ListItem } from 'native-base';
+import { View, Text, Icon } from 'native-base';
 import { COLORS } from '../../utils/ColorUtil';
 
 interface Props {
@@ -7,6 +7,8 @@ interface Props {
   time: string;
   currencySymbol: string;
   comments?: string;
+
+  deleteExpense: () => void;
 }
 
 class ExpenseList extends React.PureComponent<Props, {}> {
@@ -15,7 +17,7 @@ class ExpenseList extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { amount, time, currencySymbol, comments } = this.props;
+    const { amount, time, currencySymbol, comments, deleteExpense } = this.props;
 
     return (
       <View
@@ -27,17 +29,33 @@ class ExpenseList extends React.PureComponent<Props, {}> {
           marginVertical: 7,
         }}
       >
-        <View style={{ marginVertical: 3 }}>
-          <Text style={{ textAlign: 'left', fontWeight: '500' }}>{comments}</Text>
-        </View>
-        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View>
-            <Text>
-              {currencySymbol} {amount}
-            </Text>
+        <View style={{ display: 'flex', flexDirection: 'row' }}>
+          <View style={{ flex: 1 }}>
+            <View style={{ marginVertical: 3 }}>
+              <Text style={{ textAlign: 'left', fontWeight: '500' }}>{comments}</Text>
+            </View>
+            <View
+              style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+            >
+              <View>
+                <Text>
+                  {currencySymbol} {amount}
+                </Text>
+              </View>
+              <View>
+                <Text>{time}</Text>
+              </View>
+            </View>
           </View>
-          <View>
-            <Text>{time}</Text>
+          <View
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginLeft: 21,
+            }}
+          >
+            <Icon name="md-trash" onPress={deleteExpense} style={{ fontSize: 20 }} />
           </View>
         </View>
       </View>
