@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Dimensions, FlatList, Alert, Animated, Easing } from 'react-native';
+import { FlatList, Alert, Animated, Easing } from 'react-native';
 import { View, Text, Icon, Button } from 'native-base';
 import { NavigationInjectedProps, NavigationEventSubscription } from 'react-navigation';
 import { CircularProgress } from 'react-native-svg-circular-progress';
@@ -280,8 +280,8 @@ const mapStateToProps = (state: IReducer) => ({
 const matchDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      updateExpense: updateExpense,
-      removeExpense: removeExpense,
+      updateExpense,
+      removeExpense,
     },
     dispatch
   );

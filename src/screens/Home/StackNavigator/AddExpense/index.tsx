@@ -124,11 +124,12 @@ class AddExpense extends React.Component<Props, State> {
             }),
           ]).start(() => {
             this.props.navigation.navigate('DisplayHome');
-            return true;
           });
         }, 200);
       }
     );
+
+    return true;
   };
 
   createInitialSingleExpense = (callback?: () => void) => {
@@ -368,7 +369,7 @@ class AddExpense extends React.Component<Props, State> {
 const matchDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      addExpense: addExpense,
+      addExpense,
     },
     dispatch
   );

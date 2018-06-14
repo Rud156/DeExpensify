@@ -293,10 +293,10 @@ const mapStateToProps = (state: IReducer) => ({
 const matchDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      setMonthlyAmount: setMonthlyAmount,
-      setCurrencySymbol: setCurrencySymbol,
-      setUsername: setUsername,
-      setUserImage: setUserImage,
+      setMonthlyAmount,
+      setCurrencySymbol,
+      setUsername,
+      setUserImage,
     },
     dispatch
   );

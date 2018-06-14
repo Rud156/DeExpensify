@@ -7,8 +7,21 @@ const style = StyleSheet.create({
     height: 280,
     display: 'flex',
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
+  },
+  dateTextStyle: {
+    textAlign: 'center',
+    color: COLORS.WHITE,
+    top: -21,
+  },
+  chartHolder: {
+    height: 200,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 14,
   },
 });
 
