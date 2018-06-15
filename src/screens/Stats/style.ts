@@ -15,14 +15,7 @@ const style = StyleSheet.create({
     color: COLORS.WHITE,
     top: -21,
   },
-  chartHolder: {
-    height: 200,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 14,
-  },
+
 });
 
 export default style;
