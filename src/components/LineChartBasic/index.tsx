@@ -6,9 +6,9 @@ import * as shape from 'd3-shape';
 
 import Decorator from '../Decorator';
 
-import { COLORS } from '../../../../utils/ColorUtil';
+import { COLORS } from '../../utils/ColorUtil';
 
-import { IExpenseObject } from '../../../../core/reducers/expenditure';
+import { IExpenseObject } from '../../core/reducers/expenditure';
 
 import style from './style';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Circle } from 'react-native-svg';
 
-import { COLORS } from '../../../../utils/ColorUtil';
+import { COLORS } from '../../utils/ColorUtil';
 
-import { IExpenseObject } from '../../../../core/reducers/expenditure';
+import { IExpenseObject } from '../../core/reducers/expenditure';
 
 interface Props {
   x?: (value: number) => any;
